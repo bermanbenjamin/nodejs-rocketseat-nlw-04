@@ -9,6 +9,7 @@ describe("Users", () => {
     await connection.runMigrations();
   });
 
+
   it("should be able to create a new user", async () => {
     const response = await request(app)
       .post("/users")
@@ -22,7 +23,16 @@ describe("Users", () => {
     expect(response.status).toBe(201);
   });
 
-  it("should not be able to create a user with email exists", () => {
-    
-  })
+  it("should not be able to create a user with email exists", async () => {
+    const response = await request(app)
+      .post("/users")
+      .send({
+        user: {
+          name: "user example",
+          email: "user@example.com",
+        },
+      });
+
+    expect(response.status).toBe(400);
+  });
 });
